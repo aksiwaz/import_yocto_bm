@@ -93,7 +93,7 @@ def check_args():
         if trustcert == 'true' or args.blackduck_trust_cert:
             global_values.verify = False
 
-        global_values.timeout = os.environ.get('BLACKDUCK_TIMEOUT')
+        global_values.timeout = args.blackduck_timeout
 
         if global_values.url == '' or global_values.api == '':
             wizlist.append('BD_SERVER')
