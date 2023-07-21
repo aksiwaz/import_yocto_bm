@@ -15,6 +15,7 @@ parser = argparse.ArgumentParser(description='Import Yocto build manifest to BD 
 parser.add_argument("--blackduck_url", type=str, help="Black Duck server URL", default="")
 parser.add_argument("--blackduck_api_token", type=str, help="Black Duck API token ", default="")
 parser.add_argument("--blackduck_trust_cert", help="Black Duck trust server cert", action='store_true')
+parser.add_argument("--blackduck_timeout", help="Black Duck server connection timeout in seconds", default="30")
 parser.add_argument("-p", "--project", help="Black Duck project to create (REQUIRED)", default="")
 parser.add_argument("-v", "--version", help="Black Duck project version to create (REQUIRED)", default="")
 parser.add_argument("-y", "--yocto_build_folder",
@@ -91,7 +92,9 @@ def check_args():
         trustcert = os.environ.get('BLACKDUCK_TRUST_CERT')
         if trustcert == 'true' or args.blackduck_trust_cert:
             global_values.verify = False
-            
+
+        global_values.timeout = os.environ.get('BLACKDUCK_TIMEOUT')
+
         if global_values.url == '' or global_values.api == '':
             wizlist.append('BD_SERVER')
             wizlist.append('BD_API_TOKEN')
@@ -156,7 +159,7 @@ def connect():
     bd = Client(
         token=global_values.api,
         base_url=global_values.url,
-        timeout=30,
+        timeout=global_values.timeout,
         verify=global_values.verify  # TLS certificate verification
     )
     try:
