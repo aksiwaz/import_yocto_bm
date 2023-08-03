@@ -76,6 +76,8 @@ def upload_json(bd, filename):
     if response.status_code == 201:
         return True
     else:
+        print(f'Status code: {response.status_code}')
+        print(f'Error text: {response.text}')
         return False
 
 
