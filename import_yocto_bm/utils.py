@@ -73,11 +73,10 @@ def upload_json(bd, filename):
             response = requests.post(url, headers=headers, data=f, verify=global_values.verify)
     else:
         raise Exception("Unknown file type")
-    if response.status_code == 201:
+    if response.status_code >= 200 and response.status_code <= 299:
         return True
     else:
         print(f'Status code: {response.status_code}')
-        print(f'Error text: {response.text}')
         return False
 
 
