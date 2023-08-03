@@ -57,6 +57,7 @@ def main():
 
         if not global_values.offline:
             print("\nUploading scan to Black Duck server ...")
+            print(f"\nFile name: {config.args.output_json}")
             if utils.upload_json(bd, config.args.output_json):
                 print("Scan file uploaded successfully\nBlack Duck project '{}/{}' created.".format(
                     config.args.project, config.args.version))
