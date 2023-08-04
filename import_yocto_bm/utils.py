@@ -277,6 +277,8 @@ def check_recipes(kbrecdir):
 
     # layer = ''
     comp = ''
+    replacedrecipes_dict = {}
+    replacedrecipe_layer_dict = {}
     for recipe in global_values.recipes_dict.keys():
         # print(recipe + "/" + recipes[recipe])
         ver = global_values.recipes_dict[recipe]
@@ -299,7 +301,10 @@ def check_recipes(kbrecdir):
             comp = global_values.replace_recipes_dict[comp]
             arr = comp.split('/')
             layer = arr[0]
+            newrecipename = arr[1]
             ver = arr[2]
+            replacedrecipes_dict[newrecipename] = ver
+            replacedrecipe_layer_dict[newrecipename] = layer
             global_values.recipes_dict[recipe] = ver
             global_values.recipe_layer_dict[recipe] = layer
             replaced = True
@@ -427,6 +432,9 @@ consider using --repfile with a version replacement (available versions {})".for
                     "	- SKIPPED  - Component {}: missing from KB - will not be mapped in Black Duck project".format(
                         origcomp))
                 report['MISSING'].append(f"Component {origcomp}: missing from KB")
+    for recipe in replacedrecipes_dict.keys():
+        global_values.recipes_dict[recipe] = replacedrecipes_dict[recipe]
+        global_values.recipe_layer_dict[recipe] = replacedrecipe_layer_dict[recipe]
 
     print("	Processed {} recipes from Yocto project ({} mapped, {} not mapped, {} skipped) ...".format(
         len(global_values.recipes_dict),
